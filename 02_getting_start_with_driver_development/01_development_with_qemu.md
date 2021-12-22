@@ -50,7 +50,7 @@ git submodule update --recursive
 
 Apply QEMU patch for adding new hardwares:
 
-{TODO}: Corrent this url.
+{TODO}: Correct this url.
 ```
 wget https://raw.githubusercontent.com/d0u9/Linux-Device-Driver/draft/02_getting_start_with_driver_development/QEMU_LDD.patch
 git am QEMU_LDD.patch
@@ -62,7 +62,7 @@ Install necessary packages which are essential to buding QEMU:
 
 ```
 # For ubuntu 18.04
-sudo apt-get install ninja-build libglib2.0-dev libcap-ng-dev libcairo2-dev
+sudo apt-get install ninja-build libglib2.0-dev libcap-ng-dev libcairo2-dev python3-sphinx
 ```
 
 Setup necessary ENVs for building.
@@ -87,7 +87,7 @@ cd build
     --extra-cflags="-g3" \
     --extra-ldflags="-g3" \
     --disable-strip \
-    --disable-docs
+    ;
 make -j
 make install
 ```
