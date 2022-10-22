@@ -31,6 +31,13 @@ sudo bash -c "echo \
 The `insecure` option is compulsory, or an error of "refused mount request from
 127.0.0.1 for /xxxx (/xxx): illegal port xxxx" will report.
 
+
+Restart nfs-server to load /etc/exports configure
+```bash
+service nfs-server stop
+service nfs-server start
+```
+
 # Test NFS mounting in QEMU guest
 
 Mount host's NFS filesystem in qemu:

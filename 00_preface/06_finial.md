@@ -56,13 +56,11 @@ to prevent typing it each time.
 ```bash
 #!/bin/bash
 
-$LDD_ROOT/bin/qemu \
-   -net nic,model=e1000
-   -net user,hostfwd=tcp::7023-:23 \
-   -enable-kvm \
+qemu -enable-kvm \
+   -net nic,model=e1000 -net user,hostfwd=tcp::7023-:23 \
    -vnc none \
    -m 512M \
-   -kernel $LDD_ROOT/kernels/linux-5.10.4/arch/x86_64/boot/bzImage \
+   -kernel $LDD_ROOT/kernels/linux-5.10/arch/x86_64/boot/bzImage \
    -initrd $LDD_ROOT/initramfs.cpio.gz \
    -append 'console=ttyS0' \
    -nographic \
@@ -72,6 +70,7 @@ $LDD_ROOT/bin/qemu \
    -device qemu-xhci \
    -device usb-kmod-edu \
    -device edu
+
 ```
 
 # ¶ The end

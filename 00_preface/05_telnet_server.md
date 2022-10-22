@@ -91,7 +91,7 @@ connection.
 On host side, connect to QEMU guest by running:
 
 ```
-telent localhost 7023
+telnet localhost 7023
 ```
 
 Successfully, the guest's shell promotion will be seen in your terminal. If
