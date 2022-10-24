@@ -63,19 +63,31 @@ ssize_t scull_read(struct file *filp, char __user *buff, size_t count,
 		plist = plist->next;
 	}
 
-	pblock = list_entry(plist, struct scull_block, block_list);
+	pblock = list_entry(plist, struct scull_block, block);
 	if (toffset >= pblock->offset) {
 		retval = 0;
 		goto end_of_file;
 	}
 
-	if (count > pblock->offset)
-		count = pblock->offset;
+#if 1
+	if (count + toffset > pblock->offset)
+		count = pblock->offset - toffset;
 
-	if (copy_to_user(buff, pblock->data, count)) {
+	if (copy_to_user(buff, pblock->data + toffset, count)) {
 		retval = -EFAULT;
 		goto cpy_user_error;
 	}
+#else
+    if (count > pblock->offset)
+        count = pblock->offset;
+
+    if (copy_to_user(buff, pblock->data, count)) {
+		retval = -EFAULT;
+		goto cpy_user_error;
+	}
+
+#endif
+
 
 	retval = count;
 	*f_pos += count;
@@ -112,11 +124,11 @@ ssize_t scull_write(struct file *filp, const char __user *buff, size_t count,
 		if (!(pblock = kmalloc(sizeof(struct scull_block), GFP_KERNEL)))
 			goto malloc_error;
 		memset(pblock, 0, sizeof(struct scull_block));
-		INIT_LIST_HEAD(&pblock->block_list);
-		list_add_tail(&pblock->block_list, &dev->block_list);
+		INIT_LIST_HEAD(&pblock->block);
+		list_add_tail(&pblock->block, &dev->block_list);
 		dev->block_counter++;
 	}
-	pblock = list_last_entry(&dev->block_list, struct scull_block, block_list);
+	pblock = list_last_entry(&dev->block_list, struct scull_block, block);
 
 	if (count > SCULL_BLOCK_SIZE - toffset)
 		count = SCULL_BLOCK_SIZE - toffset;
@@ -145,8 +157,8 @@ void scull_trim(struct scull_dev *dev)
 
 	pr_debug("%s() is invoked\n", __FUNCTION__);
 
-	list_for_each_entry_safe(cur, tmp, &dev->block_list, block_list) {
-		list_del(&cur->block_list);
+	list_for_each_entry_safe(cur, tmp, &dev->block_list, block) {
+		list_del(&cur->block);
 		memset(cur, 0, sizeof(*cur));
 		kfree(cur);
 	}

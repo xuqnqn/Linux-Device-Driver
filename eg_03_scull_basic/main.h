@@ -10,7 +10,7 @@
 struct scull_block {
 	loff_t offset;
 	char data[SCULL_BLOCK_SIZE];
-	struct list_head block_list;
+	struct list_head block;
 };
 
 struct scull_dev {
