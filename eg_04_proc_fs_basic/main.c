@@ -71,6 +71,7 @@ void __exit m_exit(void)
 	printk(KERN_WARNING MODULE_NAME " unloaded\n");
 
 	remove_proc_entry(PROC_FS_NAME, parent);
+	remove_proc_entry(PROC_FS_NAME_MUL, parent);
 	remove_proc_entry(SUB_DIR_NAME, NULL);
 }
 
