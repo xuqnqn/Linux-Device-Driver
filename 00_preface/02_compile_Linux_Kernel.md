@@ -98,3 +98,22 @@ make -j modules
 [The Linux Kernel Archives]: https://www.kernel.org/
 [LFS]: http://www.linuxfromscratch.org/lfs/view/stable/chapter08/kernel.html
 
+
+
+# fix compiling error - xqq
+tools/objtool/elf.c
+
+```
+ 	symtab = find_section_by_name(elf, ".symtab");
+ 	if (!symtab) {
+-		WARN("missing symbol table");
+-		return -1;
++		/*
++		 * A missing symbol table is actually possible if it's an empty
++		 * .o file.  This can happen for thunk_64.o.
++		 */
++		return 0;
+ 	}
+    
+```
+ 
